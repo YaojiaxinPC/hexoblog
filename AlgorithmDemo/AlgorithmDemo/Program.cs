@@ -9,7 +9,7 @@ namespace AlgorithmDemo
     {
         static void Main(string[] args)
         {
-            IGetResult method = new StringToInt();
+            IGetResult method = new PrimeNum();
             method.ConsoleOut();
 
             Console.ReadLine();

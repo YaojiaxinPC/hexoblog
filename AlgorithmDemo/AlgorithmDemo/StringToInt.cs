@@ -5,6 +5,9 @@ using System.Text;
 
 namespace AlgorithmDemo
 {
+    /// <summary>
+    /// 字符串转整型
+    /// </summary>
     public class StringToInt : IGetResult
     {
         public void ConsoleOut()
