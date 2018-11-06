@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GunControl : MonoBehaviour
 {
@@ -31,6 +32,21 @@ public class GunControl : MonoBehaviour
                 InitBullet();
             }
         }
+
+        SingletonControl.Instance.gameManager.setUICallBack(null, DisableBullets);
+    }
+
+    private void DisableBullets()
+    {
+        if(bullets!=null && bullets.Count > 0)
+        {
+            foreach (var item in bullets)
+            {
+                item.gameObject.SetActive(false);
+            }
+        }
+
+        this.shootTimer = shootTime;
     }
 
     private GameObject InitBullet()
@@ -50,6 +66,14 @@ public class GunControl : MonoBehaviour
             //点击鼠标左键，进行射击
             if (Input.GetMouseButtonDown(0))
             {
+                if (UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject()
+                    && UnityEngine.EventSystems.EventSystem.current.currentSelectedGameObject)
+                {
+                    //点击在齿轮上时不触发射击
+                    if (UnityEngine.EventSystems.EventSystem.current.currentSelectedGameObject.GetComponent<Button>())
+                        return;
+                }
+
                 //实例化子弹
                 GameObject g = null;
                 for (int i = 0; i < bullets.Count; i++)

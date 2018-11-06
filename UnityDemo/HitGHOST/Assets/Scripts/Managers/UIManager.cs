@@ -24,7 +24,7 @@ public class UIManager : MonoBehaviour
     void Start()
     {
         gameManager = SingletonControl.Instance.gameManager;
-        gameManager.setUICallBack(ShowMessage);
+        gameManager.setUICallBack(ShowMessage, Continue);
     }
 
     // Update is called once per frame

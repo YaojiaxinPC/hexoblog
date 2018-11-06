@@ -104,14 +104,24 @@ public class GameManager : MonoBehaviour
     const string prefskey = "hitghost";
     private EnemyManager enemyManager = null;
     private Action<string> action = null;
+    private Action Continue = null;
     private void Start()
     {
         enemyManager = SingletonControl.Instance.enemyManager;
     }
 
-    public void setUICallBack(Action<string> _action)
+    public void setUICallBack(Action<string> _action, Action _continue)
     {
-        action = _action;
+        if (_action != null)
+            action += _action;
+        if (_continue != null)
+            Continue += _continue;
+    }
+
+    private void OnDestroy()
+    {
+        action = null;
+        Continue = null;
     }
 
     public void NewGame()
@@ -137,7 +147,10 @@ public class GameManager : MonoBehaviour
 
         string savestr = dealserialize(saveJson);
         if (!string.IsNullOrEmpty(savestr))
+        {
             PlayerPrefs.SetString(prefskey, savestr);
+            setmsg("保存成功！");
+        }
         else
             setmsg("保存失败!请稍后再试");
     }
@@ -206,6 +219,7 @@ public class GameManager : MonoBehaviour
                     SetGoalNum(saveJson.goalnum);
                     SetShutNum(saveJson.shutnum);
                     this.musicon = saveJson.musicon;
+                    if (Continue != null) Continue();
                 }
 
                 return;
